@@ -1,0 +1,190 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node{
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+struct Node* head = NULL;
+int count = 0;
+
+void startLinkedList(int data){
+    struct Node* new_node = new Node();
+    count++;
+    new_node->data = data;
+    new_node->prev = NULL;
+    new_node->next = NULL;
+    head = new_node;
+}
+
+void insertAtBeginning(int data){
+    if(head == NULL){
+        startLinkedList(data);
+    }else{
+        struct Node* new_node = new Node();
+        count++;
+        new_node->data = data;
+        new_node->next = head;
+        new_node->prev = NULL;
+        head->prev = new_node;
+        head = new_node;
+    }
+    
+}
+
+void insertAtEnd(int data){
+    if(head == NULL){
+        startLinkedList(data);
+    }else{
+        struct Node* new_node = new Node();
+        count++;
+        struct Node* ptr;
+        ptr = head;
+        new_node->data = data;
+        new_node->next = NULL;
+        while(ptr->next != NULL){
+            ptr = ptr->next;
+        }
+        new_node->prev = ptr;
+        ptr->next = new_node;
+    }
+}
+
+void insertAtPosition(int pos,int data){
+    if(head == NULL){
+        startLinkedList(data);
+    }else{
+        struct Node* new_node = new Node();
+        count++;
+        struct Node* ptr;
+        ptr = head;
+        new_node->data = data;
+        while((pos-2) != 0){
+            ptr = ptr->next;
+            pos--;
+        }
+        new_node->next = ptr->next;
+        ptr->next->prev = new_node;
+        new_node->prev = ptr;
+        ptr->next = new_node;
+    }
+}
+
+void deleteAtBeginning(){
+    if(head == NULL){
+        
+    }else{
+        count--;
+        struct Node* ptr;
+        ptr = head;
+        head = head->next;
+        head->prev = NULL;
+        free(ptr);
+    }
+}
+
+void deleteAtEnd(){
+    if(head == NULL){
+        
+    }else{
+        count--;
+        struct Node* ptr1 = head;
+        struct Node* ptr2 = head;
+        int count1 = 0;
+        while(ptr1->next != NULL){
+            ptr1 = ptr1->next;
+            if(count1 != 0){
+                ptr2 = ptr2->next;
+            }    
+            count1++;
+        }
+        ptr2->next = NULL;
+        free(ptr1);
+    }
+}
+
+void deleteAtPosition(int pos){
+    if(head == NULL){
+        
+    }else{
+        count--;
+        struct Node* ptr1 = head;
+        struct Node* ptr2 = head;
+        int count1 = 0;
+        while((pos-1) != 0){
+            ptr1 = ptr1->next;
+            if(count1 != 0){
+                ptr2 = ptr2->next;
+            }
+            count1++;
+            pos--;
+        }
+        ptr1->next->prev = ptr1->prev;
+        ptr2->next = ptr1->next;
+        free(ptr1);
+    }
+}
+
+void searchNodeFromLast(int pos){
+     if(pos > count){
+         cout<<"\n\n\nPlease enter the position no. which is less than "<<count<<"!!"; 
+     }else{
+          int pos1 = pos;
+          struct Node* ftr1 = head;
+          struct Node* ftr2 = head;
+          while(ftr1->next != NULL){
+               ftr1 = ftr1->next;
+               if(pos <= 1){
+                    ftr2 = ftr2->next;
+               }
+               pos--;
+          }
+          cout<<"\n\n\nData at Node No. "<<pos1<<" from last is: "<<ftr2->data;
+     }
+}
+
+void display(){
+    struct Node* ptr;
+    ptr = head;
+    cout<<ptr<<"\n\n";
+    while(ptr != NULL){
+        cout<<ptr->prev<<" "<<ptr->data<<" "<<ptr->next<<"\n";
+        ptr = ptr->next;
+    }
+    cout<<"\n"<<ptr;
+    cout<<"\n\n"<<"Length of the Doubly Linked List :"<<count;
+    
+}
+
+int main()
+{
+    insertAtBeginning(1);
+    insertAtBeginning(2);
+    insertAtBeginning(3);
+    insertAtBeginning(4);
+    insertAtEnd(5);
+    insertAtEnd(6);
+    insertAtEnd(7);
+    insertAtEnd(8);
+    insertAtPosition(5,9);
+    insertAtPosition(6,10);
+    insertAtPosition(7,11);
+    insertAtPosition(8,12);
+    deleteAtBeginning();
+    deleteAtEnd();
+    deleteAtEnd();
+    deleteAtEnd();
+    deleteAtPosition(2);
+    
+    display();
+    
+    searchNodeFromLast(2);
+    searchNodeFromLast(4);
+    searchNodeFromLast(6);
+    searchNodeFromLast(8);
+    
+    return 0;
+}
